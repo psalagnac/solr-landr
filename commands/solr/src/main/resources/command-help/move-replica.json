@@ -1,0 +1,6 @@
+{
+  "section": "Solr replica management",
+  "summary": "Move a replica to another Solr node",
+
+  "details": "Move a replica from one node to another node by executing ADDREPLICA on the destination and then DELETEREPLICA on the source."
+}

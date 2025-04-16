@@ -1,0 +1,6 @@
+{
+  "section": "Solr collection management",
+  "summary": "Print all existing collection name",
+
+  "details": "Print the list of all existing collections. This command accepts no parameters."
+}

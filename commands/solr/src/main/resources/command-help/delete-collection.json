@@ -1,0 +1,4 @@
+{
+  "section": "Solr collection management",
+  "summary": "Delete an existing collection from the SolrCloud cluster"
+}

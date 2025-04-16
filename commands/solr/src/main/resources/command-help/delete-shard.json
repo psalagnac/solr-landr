@@ -1,0 +1,6 @@
+{
+  "section": "Solr shard management",
+  "summary": "Delete an inactive shard",
+
+  "details": "Delete an inactive shard. This command will fail on an active shard. It is mostly useful to delete the parent shard after a split."
+}

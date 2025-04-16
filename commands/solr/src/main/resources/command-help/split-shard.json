@@ -1,0 +1,6 @@
+{
+  "section": "Solr shard management",
+  "summary": "Split a shard into two new sub-shards",
+
+  "details": "Split a shard into two new sub-shards. The original shard is not removed and remains with inactive status."
+}

@@ -1,0 +1,6 @@
+{
+  "section": "Solr replica management",
+  "summary": "Delete a replica from a shard",
+
+  "details": "Deletes a named replica from the specified collection and shard."
+}

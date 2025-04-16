@@ -1,0 +1,6 @@
+{
+  "section": "Solr collection management",
+  "summary": "Delete all existing collections",
+
+  "details": "Delete all existing collections from the SolrCloud cluster. This command accepts no parameters."
+}

@@ -16,3 +16,6 @@ include 'core:console'
 
 // Top level App
 include 'app'
+
+// Command modules
+include 'commands:solr'
