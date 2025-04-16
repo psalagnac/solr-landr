@@ -1,0 +1,125 @@
+= Solr Landr
+
+Solr Landr is a command line interface on top of SolrJ to interact with any accessible SolrCould cluster.
+
+
+* <<build,Building from source>>
+* <<usage,Usage>>
+* <<pragmas,Pragmas>>
+* <<commands,Supported commands>>
+** <<solr-commands,Solr commands>>
+** <<zk-commands,Zookeeper commands>>
+
+[[build]]
+== Building from source
+
+TODO
+
+[[usage]]
+== Usage
+
+TODO: review
+
+Once successfully built, the shell script `run.sh` can be executed in root folder to start the tool. By default, the tool will look for a Zookeeper ensemble on localhost. This can be configured with parameters `-zkhost` and `-zkroot`.
+
+Example 1: start the command line with Zookeeper running on localhost with default port, and no chroot:
+`./run.sh`
+
+Example 2: start the command line with Zookeeper running on a remote server, with a configured chroot:
+`./run.sh -zkhost remote:2181 -zkroot /solr`
+
+Complete list of parameter can be obtained by running `./run.sh -help`.
+
+[[pragmas]]
+== Pragmas
+
+Pragmas are special statements that are internal to the Solr client. All pragmas are executed with special syntax `@_pragma_ [_params_...]`
+
+[[commands]]
+== Supported commands
+
+[[solr-commands]]
+=== Solr commands
+
+For commands that refer to a specific collection, the `collection` parameter can also be implicitly specified using `@context` pragma.
+
+=== Collection management
+
+==== `create-collection`
+Create a new collection in the SolrCloud cluster. Parameter `name` is required, but it can also be implicitly specified using `@context` pragma.
+
+Syntax: `create-collection -name _name_ [-shards _shards_] [-replicas _replicas_] [-type _type_] [-config _config_]`
+
+==== `delete-collection`
+
+Delete an existing collection from the SolrCloud cluster. Parameter `name` is required, but it can also be implicitly specified using `@context` pragma.
+
+Syntax: `delete-collection -name _name_`
+
+==== `delete-all-collections`
+
+Delete all existing collections from the SolrCloud cluster. This command accepts no parameters.
+
+==== `list-collections`
+
+Print the list of all existing collections. This command accepts no parameters.
+
+==== `backup`
+
+Create a collection snapshot.
+
+Syntax: `backup -collection _collection_ -name _name_ [-repository _repository_] [-location _location_] [-async _async_]`
+
+==== `restore`
+
+Restore a snapshot into a new collection.
+
+Syntax: `restore -collection _collection_ -name _name_ [-repository _repository_] [-location _location_] [-async _async_]`
+
+=== Shard management
+
+==== `split-shard`
+
+Split a shard into two new sub-shards. The original shard is not removed and remains with _inactive_ status.
+
+Syntax: `split-shard -collection collection -shard shard`
+
+==== `delete-shard`
+
+Delete an inactive shard. This command will fail on an active shard. It is mostly useful to delete the parent shard after a split.
+
+Syntax: `delete-shard -collection _collection_ -shard _shard_`
+
+=== Replica management
+
+==== `add-replica`
+
+Add a new replica to a shard.
+
+Syntax: `add-replica -collection _collection_ -shard _shard_ [-type _type_]`
+
+==== `delete-replica`
+
+Deletes a named replica from the specified collection and shard.
+
+Syntax: `delete-replica -collection collection  -shard shard -replica replica`
+
+==== `move-replica`
+
+Move a replica from one node to another node by executing ADDREPLICA on the destination and then DELETEREPLICA on the source.
+
+Syntax: `move-replica -collection _collection_  -replica _replica_ -node _node_`
+
+
+[[zk-commands]]
+=== Zookeeper commands
+
+Following is the list of supported commands to interact directly with the Zookeeper ensemble. This is done with a client directly connecting to Zookeeper, which is independent of the one used by Solr client. Solr command and Zookeeper commands use independent sessions. There is no guarantee that the changes done with Zookeeper commands will not break the SolrCloud cluster.
+
+`zk-ls _path_`: List the child nodes of specified node
+
+`zk-get _path_` Get the data from node at the specific path
+
+`zk-create _path_` Create a new Zookeeper node.
+
+`zk-delete _path_` Delete a node at specific path.
