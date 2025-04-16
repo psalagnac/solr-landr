@@ -13,6 +13,9 @@ dependencies {
     implementation project(':core:commands')
     implementation project(':core:parser')
     implementation project(':core:console')
+
+    runtimeOnly project(':commands:solr')
+    runtimeOnly project(':commands:zookeeper')
 }
 
 application {

@@ -3,6 +3,8 @@ junit = "4.13.2"
 jackson = "2.15.2"
 jline = "3.25.1"
 solrj = "9.8.1"
+zookeeper = "3.8.4"
+curator = "5.2.1"
 
 [libraries]
 junit = { module="junit:junit", version.ref = "junit" }
@@ -11,6 +13,8 @@ jackson-databind = { module="com.fasterxml.jackson.core:jackson-databind", versi
 jline = { module="org.jline:jline", version.ref = "jline" }
 
 solrj = { module="org.apache.solr:solr-solrj", version.ref = "solrj" }
+zookeeper = { module="org.apache.zookeeper:zookeeper", version.ref = "zookeeper" }
+curator-test = { module="org.apache.curator:curator-test", version.ref = "curator" }
 
 [bundles]
 jackson = [ "jackson-core", "jackson-databind" ]

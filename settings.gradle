@@ -19,3 +19,4 @@ include 'app'
 
 // Command modules
 include 'commands:solr'
+include 'commands:zookeeper'

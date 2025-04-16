@@ -1,0 +1,17 @@
+
+plugins {
+    id 'landr.java-common'
+}
+
+description = "Zookeeper commands"
+
+dependencies {
+    implementation project(':core:commands')
+    implementation project(':core:parser')
+
+    implementation libs.zookeeper
+
+    // We don't directly use Curator, but import test framework so
+    // we get the dependencies to start embedded Zookeeper server.
+    testRuntimeOnly libs.curator.test
+}
