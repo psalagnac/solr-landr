@@ -1,0 +1,13 @@
+
+plugins {
+    id 'landr.java-common'
+}
+
+description = "Console Interface"
+
+dependencies {
+    implementation project(':core:commands')
+    implementation project(':core:parser')
+
+    implementation libs.jline
+}

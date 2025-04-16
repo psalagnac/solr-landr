@@ -1,0 +1,9 @@
+
+// All modules should have same version.
+// Define it here and avoid duplication
+version = '0.0.7-SNAPSHOT'
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}

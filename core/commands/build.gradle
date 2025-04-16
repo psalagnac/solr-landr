@@ -1,0 +1,6 @@
+
+plugins {
+    id 'landr.java-common'
+}
+
+description = "Command framework"

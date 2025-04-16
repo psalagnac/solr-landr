@@ -2,5 +2,14 @@
  * Top-level build file with configuration options.
  */
 
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
+}
+
 // Main project name
 rootProject.name = 'Solr Landr'
+
+// List all modules
+include 'core:commands'
+include 'core:parser'
+include 'core:console'
