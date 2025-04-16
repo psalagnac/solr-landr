@@ -13,3 +13,6 @@ rootProject.name = 'Solr Landr'
 include 'core:commands'
 include 'core:parser'
 include 'core:console'
+
+// Top level App
+include 'app'

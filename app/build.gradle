@@ -1,0 +1,27 @@
+
+plugins {
+    id 'landr.java-application'
+
+    // To create an Uber jar
+    id 'com.gradleup.shadow' version '8.3.5'
+}
+
+
+description = "Lander Standalone Application"
+
+dependencies {
+    implementation project(':core:commands')
+    implementation project(':core:parser')
+    implementation project(':core:console')
+}
+
+application {
+    mainClass = 'landr.Main'
+}
+
+// Running the App directly in Gradle has a terrible experience
+// but still works if we link to standard input
+run {
+    standardInput = System.in
+}
+
