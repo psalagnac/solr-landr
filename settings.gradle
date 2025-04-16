@@ -1,0 +1,6 @@
+/*
+ * Top-level build file with configuration options.
+ */
+
+// Main project name
+rootProject.name = 'Solr Landr'
