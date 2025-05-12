@@ -9,20 +9,21 @@ import org.apache.solr.client.solrj.request.CollectionAdminRequest;
 
 import java.io.IOException;
 
-public class Restore extends SolrCommand {
+/**
+ * Command to restore a SolrCloud collection from a snapshot.
+ */
+public class Restore extends SolrAdminCommand {
 
-    private final String collection;
     private final String backupName;
     private final String repository;
     private final String location;
-    private final boolean async;
 
-    public Restore(String collection, String backupName, String repository, String location, boolean async) {
-        this.collection = collection;
-        this.backupName = backupName;
-        this.repository = repository;
-        this.location =  location;
-        this.async = async;
+    public Restore(Builder builder) {
+        super(builder);
+
+        this.backupName = builder.backupName;
+        this.repository = builder.repository;
+        this.location =  builder.location;
     }
 
     @Override
@@ -33,11 +34,29 @@ public class Restore extends SolrCommand {
         request.setRepositoryName(repository);
         request.setLocation(location);
 
-        if (async) {
-            processAsyncRequest(context, request);
-        } else {
-            processRequest(context, request);
-        }
+        processAdminRequest(context, request);
     }
 
+    public static class Builder extends AdminCommandBuilder {
+
+        private String backupName;
+        private String repository;
+        private String location;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setBackupName(String backupName) {
+            this.backupName = backupName;
+        }
+
+        public void setRepository(String repository) {
+            this.repository = repository;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+    }
 }

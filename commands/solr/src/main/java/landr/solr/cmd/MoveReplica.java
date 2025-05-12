@@ -12,16 +12,21 @@ import java.io.IOException;
 /**
  * Move a replica between Solr nodes.
  */
-public class MoveReplica extends SolrCommand {
+public class MoveReplica extends SolrAdminCommand {
 
-    private final String collection;
     private final String replica;
     private final String node;
 
     public MoveReplica(String collection, String replica, String node) {
-        this.collection = collection;
+        super(collection, false);
         this.replica = replica;
         this.node = node;
+    }
+
+    public MoveReplica(Builder builder) {
+        super(builder);
+        this.replica = builder.replica;
+        this.node = builder.node;
     }
 
     @Override
@@ -29,7 +34,24 @@ public class MoveReplica extends SolrCommand {
 
         CollectionAdminRequest.MoveReplica request = CollectionAdminRequest.moveReplica(collection, replica, node);
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
     }
 
+    public static class Builder extends AdminCommandBuilder {
+
+        private String replica;
+        private String node;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setReplica(String replica) {
+            this.replica = replica;
+        }
+
+        public void setNode(String node) {
+            this.node = node;
+        }
+    }
 }

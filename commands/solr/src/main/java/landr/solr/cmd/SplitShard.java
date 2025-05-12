@@ -9,14 +9,18 @@ import org.apache.solr.client.solrj.request.CollectionAdminRequest;
 
 import java.io.IOException;
 
-public class SplitShard extends SolrCommand {
+public class SplitShard extends SolrAdminCommand {
 
-    private final String collection;
     private final String shard;
 
     public SplitShard(String collection, String shard) {
-        this.collection = collection;
+        super(collection, false);
         this.shard = shard;
+    }
+
+    public SplitShard(Builder builder) {
+        super(builder);
+        this.shard = builder.shard;
     }
 
     @Override
@@ -26,7 +30,19 @@ public class SplitShard extends SolrCommand {
         CollectionAdminRequest.SplitShard request = CollectionAdminRequest.splitShard(collection);
         request.setShardName(shard);
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
     }
 
+    public static class Builder extends AdminCommandBuilder {
+
+        private String shard;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setShard(String shard) {
+            this.shard = shard;
+        }
+    }
 }

@@ -15,20 +15,22 @@ import java.io.IOException;
 /**
  * Add one or more replicas to a shard.
  */
-public class AddReplica extends SolrCommand {
+public class AddReplica extends SolrAdminCommand {
 
-    private final String collection;
     private final String shard;
     private final Replica.Type type;
 
     public AddReplica(String collection, String shard) {
-        this(collection, shard, null);
+        super(collection, false);
+        this.shard = shard;
+
+        type = null;
     }
 
-    public AddReplica(String collection, String shard, Replica.Type type) {
-        this.collection = collection;
-        this.shard = shard;
-        this.type = type;
+    public AddReplica(Builder builder) {
+        super(builder);
+        this.shard = builder.shard;
+        this.type = builder.type;
     }
 
     @Override
@@ -58,4 +60,21 @@ public class AddReplica extends SolrCommand {
         return Replica.Type.NRT;
     }
 
+    public static class Builder extends AdminCommandBuilder {
+
+        private String shard;
+        private Replica.Type type;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setShard(String shard) {
+            this.shard = shard;
+        }
+
+        public void setType(Replica.Type type) {
+            this.type = type;
+        }
+    }
 }

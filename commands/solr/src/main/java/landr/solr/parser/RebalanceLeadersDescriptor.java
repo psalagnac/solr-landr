@@ -4,23 +4,20 @@ import landr.solr.cmd.RebalanceLeaders;
 import landr.parser.CommandParseException;
 import landr.parser.CommandString;
 import landr.parser.ParserContext;
-import landr.parser.syntax.Argument;
 import landr.parser.syntax.CommandSyntax;
-import landr.parser.syntax.ContextKey;
 
 import java.util.Map;
 
-public class RebalanceLeadersDescriptor extends SolrCommandDescriptor<RebalanceLeaders> {
+public class RebalanceLeadersDescriptor extends AdminCommandDescriptor<RebalanceLeaders> {
 
     private static final String NAME = "rebalance-leaders";
-
-    private static final String COLLECTION_PARAM = "collection";
 
     private static final CommandSyntax SYNTAX;
     static {
         SYNTAX = new CommandSyntax(
             NAME,
-            new Argument(COLLECTION_PARAM, true, ContextKey.COLLECTION_NAME)
+            COLLECTION_ARGUMENT,
+            ASYNC_ARGUMENT
         );
     }
 
@@ -38,8 +35,8 @@ public class RebalanceLeadersDescriptor extends SolrCommandDescriptor<RebalanceL
     @Override
     public RebalanceLeaders buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
-        String collection = getArgumentValue(COLLECTION_PARAM, string, context);
+        RebalanceLeaders.Builder builder = parseCommonParams(string, context, RebalanceLeaders.Builder::new);
 
-        return new RebalanceLeaders(collection);
+        return new RebalanceLeaders(builder);
     }
 }

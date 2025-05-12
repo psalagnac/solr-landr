@@ -12,35 +12,50 @@ import java.io.IOException;
 /**
  * Command to trigger a backup of a SolrCloud collection.
  */
-public class Backup extends SolrCommand {
+public class Backup extends SolrAdminCommand {
 
-    private final String collection;
     private final String name;
     private final String repository;
     private final String location;
-    private final boolean async;
 
-    public Backup(String collection, String name, String repository, String location, boolean async) {
-        this.collection = collection;
-        this.name = name;
-        this.repository = repository;
-        this.location =  location;
-        this.async = async;
+    public Backup(Builder builder) {
+        super(builder);
+
+        this.name = builder.name;
+        this.repository = builder.repository;
+        this.location =  builder.location;
     }
 
     @Override
     public void execute(CommandExecutionContext context, SolrClient client)
-    throws SolrServerException, IOException , CommandExecutionException {
+    throws SolrServerException, IOException, CommandExecutionException {
 
         CollectionAdminRequest.Backup request = CollectionAdminRequest.backupCollection(collection, name);
         request.setRepositoryName(repository);
         request.setLocation(location);
 
-        if (async) {
-            processAsyncRequest(context, request);
-        } else {
-            processRequest(context, request);
-        }
+        processAdminRequest(context, request);
     }
 
+    public static class Builder extends AdminCommandBuilder {
+        private String name;
+        private String repository;
+        private String location;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setRepository(String repository) {
+            this.repository = repository;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+    }
 }

@@ -13,9 +13,8 @@ import java.io.IOException;
  * Add a property to a single replica.
  * This invokes ADDREPLICAPROP Solr API.
  */
-public class AddReplicaProperty extends SolrCommand {
+public class AddReplicaProperty extends SolrAdminCommand {
 
-    private final String collection;
     private final String shard;
     private final String replica;
 
@@ -23,12 +22,12 @@ public class AddReplicaProperty extends SolrCommand {
     private final String name;
     private final String value;
 
-    public AddReplicaProperty(String collection, String shard, String replica, String name, String value) {
-        this.collection = collection;
-        this.shard = shard;
-        this.replica = replica;
-        this.name = name;
-        this.value = value;
+    public AddReplicaProperty(Builder builder) {
+        super(builder);
+        this.shard = builder.shard;
+        this.replica = builder.replica;
+        this.name = builder.name;
+        this.value = builder.value;
     }
 
     @Override
@@ -37,7 +36,37 @@ public class AddReplicaProperty extends SolrCommand {
 
         CollectionAdminRequest.AddReplicaProp request = CollectionAdminRequest.addReplicaProperty(collection, shard, replica, name, value);
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
     }
 
+    /**
+     * Not a great builder since all parameters are required.
+     */
+    public static class Builder extends AdminCommandBuilder {
+
+        private String shard;
+        private String replica;
+        private String name;
+        private String value;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setShard(String shard) {
+            this.shard = shard;
+        }
+
+        public void setReplica(String replica) {
+            this.replica = replica;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
 }

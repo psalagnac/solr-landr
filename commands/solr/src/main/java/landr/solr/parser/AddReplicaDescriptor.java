@@ -6,25 +6,24 @@ import landr.parser.CommandString;
 import landr.parser.ParserContext;
 import landr.parser.syntax.Argument;
 import landr.parser.syntax.CommandSyntax;
-import landr.parser.syntax.ContextKey;
 import org.apache.solr.common.cloud.Replica;
 
 import java.util.Map;
 
-public class AddReplicaDescriptor extends SolrCommandDescriptor<AddReplica> {
+public class AddReplicaDescriptor extends AdminCommandDescriptor<AddReplica> {
 
     private static final String NAME = "add-replica";
 
-    private static final String COLLECTION_PARAM = "collection";
-    private static final String SHARD_PARAM      = "shard";
-    private static final String TYPE_PARAM       = "type";
+    private static final String SHARD_PARAM = "shard";
+    private static final String TYPE_PARAM  = "type";
 
     private static final CommandSyntax SYNTAX;
     static {
         SYNTAX = new CommandSyntax(NAME,
-            new Argument(COLLECTION_PARAM, true, ContextKey.COLLECTION_NAME),
+            COLLECTION_ARGUMENT,
             new Argument(SHARD_PARAM, true),
-            new Argument(TYPE_PARAM)
+            new Argument(TYPE_PARAM),
+            ASYNC_ARGUMENT
         );
     }
 
@@ -43,10 +42,14 @@ public class AddReplicaDescriptor extends SolrCommandDescriptor<AddReplica> {
     @Override
     public AddReplica buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
-        String collection = getArgumentValue(COLLECTION_PARAM, string, context);
-        String shard = getArgumentValue(SHARD_PARAM, string, context);
-        Replica.Type type = getArgumentEnumValue(TYPE_PARAM, string, context, Replica.Type.class);
+        AddReplica.Builder builder = parseCommonParams(string, context, AddReplica.Builder::new);
 
-        return new AddReplica(collection, shard, type);
+        String shard = getArgumentValue(SHARD_PARAM, string, context);
+        builder.setShard(shard);
+
+        Replica.Type type = getArgumentEnumValue(TYPE_PARAM, string, context, Replica.Type.class);
+        builder.setType(type);
+
+        return new AddReplica(builder);
     }
 }

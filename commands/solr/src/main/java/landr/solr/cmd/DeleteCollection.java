@@ -12,12 +12,17 @@ import java.io.IOException;
 /**
  * Simple command to delete a collection in SolrCloud.
  */
-public class DeleteCollection extends SolrCommand {
+public class DeleteCollection extends SolrAdminCommand {
 
-    private final String collection;
-
+    /**
+     * Simple constructor for a synchronous request.
+     */
     public DeleteCollection(String collection) {
-        this.collection = collection;
+        super(collection, false);
+    }
+
+    public DeleteCollection(Builder builder) {
+        super(builder);
     }
 
     @Override
@@ -26,6 +31,13 @@ public class DeleteCollection extends SolrCommand {
 
         CollectionAdminRequest.Delete request = CollectionAdminRequest.deleteCollection(collection);
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
+    }
+
+    public static class Builder extends AdminCommandBuilder {
+
+        public Builder(String collection) {
+            super(collection);
+        }
     }
 }

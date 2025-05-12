@@ -7,15 +7,13 @@ import landr.parser.ParserContext;
 import landr.parser.CommandParseException;
 import landr.parser.syntax.Argument;
 import landr.parser.syntax.CommandSyntax;
-import landr.parser.syntax.ContextKey;
 
 import java.util.Map;
 
-public class AddReplicaPropertyDescriptor extends SolrCommandDescriptor<AddReplicaProperty> {
+public class AddReplicaPropertyDescriptor extends AdminCommandDescriptor<AddReplicaProperty> {
 
     private static final String NAME = "add-replica-property";
 
-    private static final String COLLECTION_PARAM = "collection";
     private static final String SHARD_PARAM      = "shard";
     private static final String REPLICA_PARAM    = "replica";
     private static final String NAME_PARAM       = "name";
@@ -25,11 +23,12 @@ public class AddReplicaPropertyDescriptor extends SolrCommandDescriptor<AddRepli
     static {
         SYNTAX = new CommandSyntax(
             NAME,
-            new Argument(COLLECTION_PARAM, true, ContextKey.COLLECTION_NAME),
+            COLLECTION_ARGUMENT,
             new Argument(SHARD_PARAM, true),
             new Argument(REPLICA_PARAM, true),
             new Argument(NAME_PARAM, true),
-            new Argument(VALUE_PARAM, true)
+            new Argument(VALUE_PARAM, true),
+            ASYNC_ARGUMENT
         );
     }
 
@@ -50,12 +49,20 @@ public class AddReplicaPropertyDescriptor extends SolrCommandDescriptor<AddRepli
     @Override
     public AddReplicaProperty buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
-        String collection = getArgumentValue(COLLECTION_PARAM, string, context);
-        String shard      = getArgumentValue(SHARD_PARAM, string, context);
-        String replica    = getArgumentValue(REPLICA_PARAM, string, context);
-        String name       = getArgumentValue(NAME_PARAM, string, context);
-        String value      = getArgumentValue(VALUE_PARAM, string, context);
+        AddReplicaProperty.Builder builder = parseCommonParams(string, context, AddReplicaProperty.Builder::new);
 
-        return new AddReplicaProperty(collection, shard, replica, name, value);
+        String shard = getArgumentValue(SHARD_PARAM, string, context);
+        builder.setShard(shard);
+
+        String replica = getArgumentValue(REPLICA_PARAM, string, context);
+        builder.setReplica(replica);
+
+        String name = getArgumentValue(NAME_PARAM, string, context);
+        builder.setName(name);
+
+        String value = getArgumentValue(VALUE_PARAM, string, context);
+        builder.setValue(value);
+
+        return new AddReplicaProperty(builder);
     }
 }

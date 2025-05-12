@@ -12,14 +12,18 @@ import java.io.IOException;
 /**
  * Delete an inactive shard from a collection.
  */
-public class DeleteShard extends SolrCommand {
+public class DeleteShard extends SolrAdminCommand {
 
-    private final String collection;
     private final String shard;
 
     public DeleteShard(String collection, String shard) {
-        this.collection = collection;
+        super(collection, false);
         this.shard = shard;
+    }
+
+    public DeleteShard(Builder builder) {
+        super(builder);
+        this.shard = builder.shard;
     }
 
     @Override
@@ -27,7 +31,19 @@ public class DeleteShard extends SolrCommand {
 
         CollectionAdminRequest.DeleteShard request = CollectionAdminRequest.deleteShard(collection, shard);
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
     }
 
+    public static class Builder extends AdminCommandBuilder {
+
+        private String shard;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setShard(String shard) {
+            this.shard = shard;
+        }
+    }
 }

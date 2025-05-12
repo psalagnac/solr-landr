@@ -92,20 +92,6 @@ public abstract class SolrCommand extends Command {
     }
 
     /**
-     * Utility method to send an asynchronous command to the Solr cluster. The async ID is generated and printed.
-     * Using this method instead of directly calling SolrJ is preferred.
-     */
-    protected void processAsyncRequest(CommandExecutionContext context, CollectionAdminRequest.AsyncCollectionAdminRequest request)
-    throws SolrServerException, IOException, CommandExecutionException {
-
-        String id = context.generateId();
-        request.setAsyncId(id);
-        context.println("ID: " + id);
-
-        processRequest(context, request);
-    }
-
-    /**
      * Recursive walkthrough all objects to display a JSon like output.
      * This is mostly useful to print a {@link NamedList} from a Solr response.
      */

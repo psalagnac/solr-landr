@@ -8,12 +8,14 @@ import org.apache.solr.client.solrj.request.CollectionAdminRequest;
 
 import java.io.IOException;
 
-public class RebalanceLeaders extends SolrCommand {
-
-    private final String collection;
+public class RebalanceLeaders extends SolrAdminCommand {
 
     public RebalanceLeaders(String collection) {
-        this.collection = collection;
+        super(collection, false);
+    }
+
+    public RebalanceLeaders(Builder builder) {
+        super(builder);
     }
 
     @Override
@@ -22,7 +24,14 @@ public class RebalanceLeaders extends SolrCommand {
 
         CollectionAdminRequest.RebalanceLeaders request = CollectionAdminRequest.rebalanceLeaders(collection);
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
+    }
+
+    public static class Builder extends AdminCommandBuilder {
+
+        public Builder(String collection) {
+            super(collection);
+        }
     }
 
 }

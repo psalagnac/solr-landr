@@ -6,27 +6,26 @@ import landr.parser.CommandString;
 import landr.parser.ParserContext;
 import landr.parser.syntax.Argument;
 import landr.parser.syntax.CommandSyntax;
-import landr.parser.syntax.ContextKey;
 
 import java.util.Map;
 
 /**
  * Simple command to move a replica from a Solr node to another.
  */
-public class MoveReplicaDescriptor extends SolrCommandDescriptor<MoveReplica> {
+public class MoveReplicaDescriptor extends AdminCommandDescriptor<MoveReplica> {
 
     private static final String NAME = "move-replica";
 
-    private static final String COLLECTION_PARAM = "collection";
     private static final String REPLICA_PARAM    = "replica";
     private static final String NODE_PARAM       = "node";
 
     private static final CommandSyntax SYNTAX;
     static {
         SYNTAX = new CommandSyntax(NAME,
-            new Argument(COLLECTION_PARAM, true, ContextKey.COLLECTION_NAME),
+            COLLECTION_ARGUMENT,
             new Argument(REPLICA_PARAM, true),
-            new Argument(NODE_PARAM, true)
+            new Argument(NODE_PARAM, true),
+            ASYNC_ARGUMENT
         );
     }
 
@@ -46,10 +45,14 @@ public class MoveReplicaDescriptor extends SolrCommandDescriptor<MoveReplica> {
     @Override
     public MoveReplica buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
-        String collection = getArgumentValue(COLLECTION_PARAM, string, context);
-        String replica = getArgumentValue(REPLICA_PARAM, string, context);
-        String node = getArgumentValue(NODE_PARAM, string, context);
+        MoveReplica.Builder builder = parseCommonParams(string, context, MoveReplica.Builder::new);
 
-        return new MoveReplica(collection, replica, node);
+        String replica = getArgumentValue(REPLICA_PARAM, string, context);
+        builder.setReplica(replica);
+
+        String node = getArgumentValue(NODE_PARAM, string, context);
+        builder.setNode(node);
+
+        return new MoveReplica(builder);
     }
 }

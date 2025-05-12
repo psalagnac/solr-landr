@@ -14,37 +14,43 @@ import static org.apache.solr.client.solrj.request.CollectionAdminRequest.*;
 /**
  * Simple command to create a new collection in SolrCloud.
  */
-public class CreateCollection extends SolrCommand {
+public class CreateCollection extends SolrAdminCommand {
 
     public enum Type {
         NRT,
         TLOG
     }
 
+    private static final int DEFAULT_SHARDS = 1;
+    private static final int DEFAULT_REPLICAS = 1;
     private static final Type DEFAULT_TYPE = Type.NRT;
 
-    private final String collection;
     private final String config;
     private final String router;
     private final int shards;
-    private final Type type;
     private final int replicas;
+    private final Type type;
 
-    public CreateCollection(String collection, String config) {
-        this(collection, config, 1, DEFAULT_TYPE, 1);
+    /**
+     * Simple constructor to create a collection with default parameters.
+     */
+    public CreateCollection(String collection) {
+        super(collection, false);
+        this.config = null;
+        this.router = null;
+        this.shards = DEFAULT_SHARDS;
+        this.replicas = DEFAULT_REPLICAS;
+        this.type = DEFAULT_TYPE;
     }
 
-    public CreateCollection(String collection, String config, int shards, Type type, int replicas) {
-        this(collection, config, null, shards, type, replicas);
-    }
+    public CreateCollection(Builder builder) {
+        super(builder);
 
-    public CreateCollection(String collection, String config, String router, int shards, Type type, int replicas) {
-        this.collection = collection;
-        this.config = config;
-        this.router = router;
-        this.shards = shards;
-        this.replicas = replicas;
-        this.type = type;
+        this.config = builder.config;
+        this.router = builder.router;
+        this.shards = builder.shards;
+        this.replicas = builder.replicas;
+        this.type = builder.type;
     }
 
     @Override
@@ -60,7 +66,59 @@ public class CreateCollection extends SolrCommand {
             request.setRouterName(router);
         }
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
     }
 
+    /**
+     * Builder pattern for create-collection command.
+     */
+    public static class Builder extends AdminCommandBuilder {
+
+        private String config;
+        private String router;
+        private int shards = DEFAULT_SHARDS;
+        private int replicas = DEFAULT_REPLICAS;
+        private Type type = DEFAULT_TYPE;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setConfig(String config) {
+            this.config = config;
+        }
+
+        public void setRouter(String router) {
+            this.router = router;
+        }
+
+        /**
+         * Set number of shards for the collection being created. If the parameter
+         * is zero or negative, we use {@link #DEFAULT_SHARDS} instead.
+         */
+        public void setShards(int shards) {
+            if (shards <= 0) {
+                this.shards = DEFAULT_SHARDS;
+            } else {
+                this.shards = shards;
+            }
+        }
+
+        /**
+         * Set number of replicas for the collection being created. If the parameter
+         * is zero or negative, we use {@link #DEFAULT_REPLICAS} instead.
+         */
+        public void setReplicas(int replicas) {
+            if (replicas <= 0) {
+                this.replicas = DEFAULT_REPLICAS;
+            } else {
+                this.replicas = replicas;
+            }
+        }
+
+        public void setType(Type type) {
+            this.type = type != null ? type : DEFAULT_TYPE;
+        }
+
+    }
 }

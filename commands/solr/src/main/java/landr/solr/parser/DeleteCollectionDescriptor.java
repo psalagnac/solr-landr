@@ -4,23 +4,20 @@ import landr.solr.cmd.DeleteCollection;
 import landr.parser.CommandParseException;
 import landr.parser.CommandString;
 import landr.parser.ParserContext;
-import landr.parser.syntax.Argument;
 import landr.parser.syntax.CommandSyntax;
-import landr.parser.syntax.ContextKey;
 
 import java.util.Map;
 
-public class DeleteCollectionDescriptor extends SolrCommandDescriptor<DeleteCollection> {
+public class DeleteCollectionDescriptor extends AdminCommandDescriptor<DeleteCollection> {
 
     private static final String NAME = "delete-collection";
-
-    private static final String COLLECTION_PARAM = "name";
 
     private static final CommandSyntax SYNTAX;
     static {
         SYNTAX = new CommandSyntax(
             NAME, COLLECTION_PARAM,
-            new Argument(COLLECTION_PARAM, true, ContextKey.COLLECTION_NAME)
+            COLLECTION_ARGUMENT,
+            ASYNC_ARGUMENT
         );
     }
 
@@ -38,7 +35,8 @@ public class DeleteCollectionDescriptor extends SolrCommandDescriptor<DeleteColl
     @Override
     public DeleteCollection buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
-        String collection = getArgumentValue(COLLECTION_PARAM, string, context);
-        return new DeleteCollection(collection);
+        DeleteCollection.Builder builder = parseCommonParams(string, context, DeleteCollection.Builder::new);
+
+        return new DeleteCollection(builder);
     }
 }

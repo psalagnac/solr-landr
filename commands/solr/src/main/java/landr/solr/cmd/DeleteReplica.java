@@ -12,16 +12,21 @@ import java.io.IOException;
 /**
  * Delete a single replica in a collection.
  */
-public class DeleteReplica extends SolrCommand {
+public class DeleteReplica extends SolrAdminCommand {
 
-    private final String collection;
     private final String shard;
     private final String replica;
 
     public DeleteReplica(String collection, String shard, String replica) {
-        this.collection = collection;
+        super(collection, false);
         this.shard = shard;
         this.replica = replica;
+    }
+
+    public DeleteReplica(Builder builder) {
+        super(builder);
+        this.shard = builder.shard;
+        this.replica = builder.replica;
     }
 
     @Override
@@ -29,7 +34,24 @@ public class DeleteReplica extends SolrCommand {
 
         CollectionAdminRequest.DeleteReplica request = CollectionAdminRequest.deleteReplica(collection, shard, replica);
 
-        processRequest(context, request);
+        processAdminRequest(context, request);
     }
 
+    public static class Builder extends AdminCommandBuilder {
+
+        private String shard;
+        private String replica;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setShard(String shard) {
+            this.shard = shard;
+        }
+
+        public void setReplica(String replica) {
+            this.replica = replica;
+        }
+    }
 }
