@@ -41,6 +41,8 @@ public class CreateCollectionDescriptor extends AdminCommandDescriptor<CreateCol
     @Override
     public CreateCollection buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
+        // Instantiate the builder here because the collection name param is 'name' and
+        // not the standard 'collection'.
         String collection = getArgumentValue(COLLECTION_PARAM, string, context);
         CreateCollection.Builder builder = new CreateCollection.Builder(collection);
 

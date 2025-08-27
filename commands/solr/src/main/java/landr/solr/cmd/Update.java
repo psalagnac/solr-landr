@@ -14,24 +14,27 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
 
-public class Update extends SolrCommand {
+public class Update extends SolrDataCommand {
 
-    private final String collection;
     private final int count;
     private final boolean commit;
     private final boolean softCommit;
     private final DocGenerator generator;
 
     public Update(String collection, int count, boolean commit, boolean softCommit) {
-        this(collection, count, commit, softCommit, Update::defaultDocGenerator);
-    }
-
-    public Update(String collection, int count, boolean commit, boolean softCommit, DocGenerator generator) {
-        this.collection = collection;
+        super(collection);
         this.count = count;
         this.commit = commit;
         this.softCommit = softCommit;
-        this.generator = generator;
+        this.generator = Update::defaultDocGenerator;
+    }
+
+    public Update(Builder builder) {
+        super(builder);
+        this.count = builder.count;
+        this.commit = builder.commit;
+        this.softCommit = builder.softCommit;
+        this.generator = builder.generator != null ? builder.generator : Update::defaultDocGenerator;
     }
 
     @Override
@@ -64,6 +67,37 @@ public class Update extends SolrCommand {
         }
 
         return document;
+    }
+
+    /**
+     * Builder pattern.
+     */
+    public static class Builder extends DataCommandBuilder {
+
+        private int count;
+        private boolean commit;
+        private boolean softCommit;
+        private DocGenerator generator;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public void setCommit(boolean commit) {
+            this.commit = commit;
+        }
+
+        public void setSoftCommit(boolean softCommit) {
+            this.softCommit = softCommit;
+        }
+
+        public void setGenerator(DocGenerator generator) {
+            this.generator = generator;
+        }
     }
 
     @FunctionalInterface

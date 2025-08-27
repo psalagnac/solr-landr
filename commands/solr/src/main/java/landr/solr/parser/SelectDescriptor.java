@@ -10,11 +10,10 @@ import landr.parser.syntax.ContextKey;
 
 import java.util.Map;
 
-public class SelectDescriptor extends SolrCommandDescriptor<Select> {
+public class SelectDescriptor extends DataCommandDescriptor<Select> {
 
     private static final String NAME = "select";
 
-    private static final String COLLECTION_PARAM = "collection";
     private static final String QUERY_PARAM = "query";
 
     private static final CommandSyntax SYNTAX;
@@ -40,10 +39,12 @@ public class SelectDescriptor extends SolrCommandDescriptor<Select> {
     @Override
     public Select buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
-        String collection = getArgumentValue(COLLECTION_PARAM, string, context);
-        String query = getArgumentValue(QUERY_PARAM, string, context);
+        Select.Builder builder = parseCommonParams(string, context, Select.Builder::new);
 
-        return new Select(collection, query);
+        String query = getArgumentValue(QUERY_PARAM, string, context);
+        builder.setQuery(query);
+
+        return new Select(builder);
     }
 
 }

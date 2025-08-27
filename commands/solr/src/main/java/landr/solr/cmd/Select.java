@@ -14,14 +14,18 @@ import java.io.IOException;
 /**
  * Simple query to Solr.
  */
-public class Select extends SolrCommand {
+public class Select extends SolrDataCommand {
 
-    private final String collection;
     private final String query;
 
     public Select(String collection, String query) {
-        this.collection = collection;
+        super(collection);
         this.query = query;
+    }
+
+    public Select(Builder builder) {
+        super(builder);
+        this.query = builder.query;
     }
 
     @Override
@@ -39,4 +43,18 @@ public class Select extends SolrCommand {
         long hits = response.getResults().getNumFound();
         context.println(String.format("Hits: %d", hits));
     }
+
+    public static class Builder extends DataCommandBuilder {
+
+        private String query;
+
+        public Builder(String collection) {
+            super(collection);
+        }
+
+        public void setQuery(String query) {
+            this.query = query;
+        }
+    }
+
 }

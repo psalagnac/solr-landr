@@ -10,11 +10,10 @@ import landr.parser.syntax.ContextKey;
 
 import java.util.Map;
 
-public class UpdateDescriptor extends SolrCommandDescriptor<Update> {
+public class UpdateDescriptor extends DataCommandDescriptor<Update> {
 
     private static final String NAME = "update";
 
-    private static final String COLLECTION_PARAM  = "collection";
     private static final String COUNT_PARAM       = "count";
     private static final String COMMIT_PARAM      = "commit";
     private static final String SOFT_COMMIT_PARAM = "soft-commit";
@@ -44,12 +43,18 @@ public class UpdateDescriptor extends SolrCommandDescriptor<Update> {
     @Override
     public Update buildCommand(CommandString string, ParserContext context) throws CommandParseException {
 
-        String collection = getArgumentValue(COLLECTION_PARAM, string, context);
-        int count = getArgumentIntegerValue(COUNT_PARAM, string, context);
-        boolean commit = getArgumentBooleanValue(COMMIT_PARAM, string, context);
-        boolean softCommit = getArgumentBooleanValue(SOFT_COMMIT_PARAM, string, context);
+        Update.Builder builder = parseCommonParams(string, context, Update.Builder::new);
 
-        return new Update(collection, count, commit, softCommit);
+        int count = getArgumentIntegerValue(COUNT_PARAM, string, context);
+        builder.setCount(count);
+
+        boolean commit = getArgumentBooleanValue(COMMIT_PARAM, string, context);
+        builder.setCommit(commit);
+
+        boolean softCommit = getArgumentBooleanValue(SOFT_COMMIT_PARAM, string, context);
+        builder.setSoftCommit(softCommit);
+
+        return new Update(builder);
     }
 
 }

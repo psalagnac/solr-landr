@@ -116,8 +116,7 @@ public abstract class SolrCommand extends Command {
             printEntries(context, map.entrySet(), level);
         } else if (object instanceof List) {
             printList(context, object, level);
-        }
-        else {
+        } else {
             printObject(context, object);
         }
     }
