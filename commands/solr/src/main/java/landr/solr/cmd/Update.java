@@ -17,6 +17,7 @@ import java.util.Random;
 public class Update extends SolrDataCommand {
 
     private final int count;
+    private final int batches;
     private final boolean commit;
     private final boolean softCommit;
     private final DocGenerator generator;
@@ -26,12 +27,15 @@ public class Update extends SolrDataCommand {
         this.count = count;
         this.commit = commit;
         this.softCommit = softCommit;
+
         this.generator = Update::defaultDocGenerator;
+        this.batches = 1;
     }
 
     public Update(Builder builder) {
         super(builder);
         this.count = builder.count;
+        this.batches = builder.batches;
         this.commit = builder.commit;
         this.softCommit = builder.softCommit;
         this.generator = builder.generator != null ? builder.generator : Update::defaultDocGenerator;
@@ -41,6 +45,13 @@ public class Update extends SolrDataCommand {
     public void execute(CommandExecutionContext context, SolrClient client)
     throws SolrServerException, IOException, CommandExecutionException {
 
+        for (int i=0; i<batches; i++){
+            executeBatch(context);
+        }
+    }
+
+    private void executeBatch(CommandExecutionContext context)
+    throws SolrServerException, IOException, CommandExecutionException {
         UpdateRequest request = new UpdateRequest();
 
         for (int i=0; i<count; i++){
@@ -75,6 +86,7 @@ public class Update extends SolrDataCommand {
     public static class Builder extends DataCommandBuilder {
 
         private int count;
+        private int batches;
         private boolean commit;
         private boolean softCommit;
         private DocGenerator generator;
@@ -85,6 +97,10 @@ public class Update extends SolrDataCommand {
 
         public void setCount(int count) {
             this.count = count;
+        }
+
+        public void setBatches(int batches) {
+            this.batches = batches;
         }
 
         public void setCommit(boolean commit) {

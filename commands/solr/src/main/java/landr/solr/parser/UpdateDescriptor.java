@@ -15,6 +15,7 @@ public class UpdateDescriptor extends DataCommandDescriptor<Update> {
     private static final String NAME = "update";
 
     private static final String COUNT_PARAM       = "count";
+    private static final String BATCHES_PARAM     = "batches";
     private static final String COMMIT_PARAM      = "commit";
     private static final String SOFT_COMMIT_PARAM = "soft-commit";
 
@@ -24,6 +25,7 @@ public class UpdateDescriptor extends DataCommandDescriptor<Update> {
             NAME,
             new Argument(COLLECTION_PARAM, true, ContextKey.COLLECTION_NAME),
             new Argument(COUNT_PARAM, "1"),
+            new Argument(BATCHES_PARAM, "1"),
             new Argument(COMMIT_PARAM, "false"),
             new Argument(SOFT_COMMIT_PARAM, "false")
         );
@@ -47,6 +49,9 @@ public class UpdateDescriptor extends DataCommandDescriptor<Update> {
 
         int count = getArgumentIntegerValue(COUNT_PARAM, string, context);
         builder.setCount(count);
+
+        int batches = getArgumentIntegerValue(BATCHES_PARAM, string, context);
+        builder.setBatches(batches);
 
         boolean commit = getArgumentBooleanValue(COMMIT_PARAM, string, context);
         builder.setCommit(commit);
