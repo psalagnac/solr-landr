@@ -1,39 +1,37 @@
 package landr.solr.parser;
 
-import landr.solr.cmd.SetClusterProperty;
 import landr.parser.CommandParseException;
 import landr.parser.CommandString;
 import landr.parser.ParserContext;
 import landr.parser.syntax.Argument;
 import landr.parser.syntax.CommandSyntax;
+import landr.solr.cmd.SetClusterProperty;
 
 public class SetClusterPropertyDescriptor extends SolrCommandDescriptor<SetClusterProperty> {
 
-    private static final String NAME = "set-cluster-property";
+  private static final String NAME = "set-cluster-property";
 
-    private static final String NAME_PARAM  = "name";
-    private static final String VALUE_PARAM = "value";
+  private static final String NAME_PARAM = "name";
+  private static final String VALUE_PARAM = "value";
 
-    private static final CommandSyntax SYNTAX;
-    static {
-        SYNTAX = new CommandSyntax(
-            NAME,
-            new Argument(NAME_PARAM, true),
-            new Argument(VALUE_PARAM, true)
-        );
-    }
+  private static final CommandSyntax SYNTAX;
 
-    public SetClusterPropertyDescriptor() {
-        super(SYNTAX);
-    }
+  static {
+    SYNTAX =
+        new CommandSyntax(NAME, new Argument(NAME_PARAM, true), new Argument(VALUE_PARAM, true));
+  }
 
-    @Override
-    public SetClusterProperty buildCommand(CommandString string, ParserContext context) throws CommandParseException {
+  public SetClusterPropertyDescriptor() {
+    super(SYNTAX);
+  }
 
-        String name  = getArgumentValue(NAME_PARAM, string, context);
-        String value = getArgumentValue(VALUE_PARAM, string, context);
+  @Override
+  public SetClusterProperty buildCommand(CommandString string, ParserContext context)
+      throws CommandParseException {
 
-        return new SetClusterProperty(name, value);
-    }
+    String name = getArgumentValue(NAME_PARAM, string, context);
+    String value = getArgumentValue(VALUE_PARAM, string, context);
 
+    return new SetClusterProperty(name, value);
+  }
 }

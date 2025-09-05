@@ -1,42 +1,38 @@
 package landr.solr.parser;
 
-import landr.solr.cmd.DeleteCollection;
+import java.util.Map;
 import landr.parser.CommandParseException;
 import landr.parser.CommandString;
 import landr.parser.ParserContext;
 import landr.parser.syntax.CommandSyntax;
-
-import java.util.Map;
+import landr.solr.cmd.DeleteCollection;
 
 public class DeleteCollectionDescriptor extends AdminCommandDescriptor<DeleteCollection> {
 
-    private static final String NAME = "delete-collection";
+  private static final String NAME = "delete-collection";
 
-    private static final CommandSyntax SYNTAX;
-    static {
-        SYNTAX = new CommandSyntax(
-            NAME, COLLECTION_PARAM,
-            COLLECTION_ARGUMENT,
-            ASYNC_ARGUMENT
-        );
-    }
+  private static final CommandSyntax SYNTAX;
 
-    public DeleteCollectionDescriptor() {
-        super(SYNTAX);
-    }
+  static {
+    SYNTAX = new CommandSyntax(NAME, COLLECTION_PARAM, COLLECTION_ARGUMENT, ASYNC_ARGUMENT);
+  }
 
-    @Override
-    public Map<String, ClusterStateCompleter.CompletionType> getClusterStateCompletions() {
-        return Map.of(
-            COLLECTION_PARAM, ClusterStateCompleter.CompletionType.COLLECTION
-        );
-    }
+  public DeleteCollectionDescriptor() {
+    super(SYNTAX);
+  }
 
-    @Override
-    public DeleteCollection buildCommand(CommandString string, ParserContext context) throws CommandParseException {
+  @Override
+  public Map<String, ClusterStateCompleter.CompletionType> getClusterStateCompletions() {
+    return Map.of(COLLECTION_PARAM, ClusterStateCompleter.CompletionType.COLLECTION);
+  }
 
-        DeleteCollection.Builder builder = parseCommonParams(string, context, DeleteCollection.Builder::new);
+  @Override
+  public DeleteCollection buildCommand(CommandString string, ParserContext context)
+      throws CommandParseException {
 
-        return new DeleteCollection(builder);
-    }
+    DeleteCollection.Builder builder =
+        parseCommonParams(string, context, DeleteCollection.Builder::new);
+
+    return new DeleteCollection(builder);
+  }
 }
