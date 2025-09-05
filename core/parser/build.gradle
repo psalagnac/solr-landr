@@ -1,12 +1,12 @@
 
 plugins {
-    id 'landr.java-common'
+  id 'landr.java-common'
 }
 
 description = "Command Line Parser"
 
 dependencies {
-    implementation project(':core:commands')
+  implementation project(':core:commands')
 
-    implementation libs.bundles.jackson
+  implementation libs.bundles.jackson
 }

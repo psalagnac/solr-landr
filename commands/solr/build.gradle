@@ -1,13 +1,13 @@
 
 plugins {
-    id 'landr.java-common'
+  id 'landr.java-common'
 }
 
 description = "Solr commands"
 
 dependencies {
-    implementation project(':core:commands')
-    implementation project(':core:parser')
+  implementation project(':core:commands')
+  implementation project(':core:parser')
 
-    implementation libs.solrj
+  implementation libs.solrj
 }

@@ -1,7 +1,6 @@
 
 plugins {
-    id 'landr.java-common'
-    // Top level application
-    id 'application'
+  id 'landr.java-common'
+  // Top level application
+  id 'application'
 }
-
