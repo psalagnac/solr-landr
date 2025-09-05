@@ -2,17 +2,17 @@ package landr.parser;
 
 public class CommandParseException extends Exception {
 
-    private final ParserContext context;
+  private final ParserContext context;
 
-    public CommandParseException(ParserContext context, String message) {
-        super(message);
+  public CommandParseException(ParserContext context, String message) {
+    super(message);
 
-        this.context = context;
-    }
+    this.context = context;
+  }
 
-    public CommandParseException(ParserContext context, String message, Throwable cause) {
-        super(message, cause);
+  public CommandParseException(ParserContext context, String message, Throwable cause) {
+    super(message, cause);
 
-        this.context = context;
-    }
+    this.context = context;
+  }
 }
