@@ -1,48 +1,46 @@
 package landr.cmd;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+
 public class CommandEnvironmentTest {
 
-    private static class Parent implements AutoCloseable {
-        private boolean closed;
-        @Override
-        public void close() {
-            closed = true;
-        }
+  private static class Parent implements AutoCloseable {
+    private boolean closed;
+
+    @Override
+    public void close() {
+      closed = true;
     }
-    private static class Child extends Parent {}
+  }
 
-    /**
-     * Check we can retrieve an object with either the parent or the child class.
-     */
-    @Test
-    public void testSubClass() throws Exception {
+  private static class Child extends Parent {}
 
-        CommandEnvironment environment = new CommandEnvironment();
+  /** Check we can retrieve an object with either the parent or the child class. */
+  @Test
+  public void testSubClass() throws Exception {
 
-        Child object = new Child();
-        environment.addObject(object);
+    CommandEnvironment environment = new CommandEnvironment();
 
-        assertSame(object, environment.getObject(Child.class));
-        assertSame(object, environment.getObject(Parent.class));
-    }
+    Child object = new Child();
+    environment.addObject(object);
 
-    /**
-     * Check we close registered objects.
-     */
-    @Test
-    public void testClose() throws Exception {
+    assertSame(object, environment.getObject(Child.class));
+    assertSame(object, environment.getObject(Parent.class));
+  }
 
-        CommandEnvironment environment = new CommandEnvironment();
+  /** Check we close registered objects. */
+  @Test
+  public void testClose() throws Exception {
 
-        Parent child = new Child();
-        environment.addObject(child);
-        environment.close();
+    CommandEnvironment environment = new CommandEnvironment();
 
-        assertTrue(child.closed);
-    }
+    Parent child = new Child();
+    environment.addObject(child);
+    environment.close();
+
+    assertTrue(child.closed);
+  }
 }
