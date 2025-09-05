@@ -8,27 +8,24 @@ import landr.parser.syntax.CommandSyntax;
 
 class CreateNodeDescriptor extends ZkCommandDescriptor<CreateNode> {
 
-    private static final String NAME = "zk-create";
+  private static final String NAME = "zk-create";
 
-    private static final CommandSyntax SYNTAX;
-    static {
-        SYNTAX = new CommandSyntax(
-            NAME, PATH_PARAM,
-            new Argument(PATH_PARAM, true)
-        );
-    }
+  private static final CommandSyntax SYNTAX;
 
-    CreateNodeDescriptor() {
-        super(SYNTAX);
-    }
+  static {
+    SYNTAX = new CommandSyntax(NAME, PATH_PARAM, new Argument(PATH_PARAM, true));
+  }
 
-    @Override
-    public CreateNode buildCommand(CommandString string, ParserContext context) throws CommandParseException {
+  CreateNodeDescriptor() {
+    super(SYNTAX);
+  }
 
-        String path = getArgumentValue(PATH_PARAM, string, context);
+  @Override
+  public CreateNode buildCommand(CommandString string, ParserContext context)
+      throws CommandParseException {
 
-        return new CreateNode(path);
+    String path = getArgumentValue(PATH_PARAM, string, context);
 
-    }
-
+    return new CreateNode(path);
+  }
 }

@@ -8,27 +8,24 @@ import landr.parser.syntax.CommandSyntax;
 
 class DeleteNodeDescriptor extends ZkCommandDescriptor<DeleteNode> {
 
-    private static final String NAME = "zk-delete";
+  private static final String NAME = "zk-delete";
 
-    private static final CommandSyntax SYNTAX;
-    static {
-        SYNTAX = new CommandSyntax(
-                NAME, PATH_PARAM,
-                new Argument(PATH_PARAM, true)
-        );
-    }
+  private static final CommandSyntax SYNTAX;
 
-    DeleteNodeDescriptor() {
-        super(SYNTAX);
-    }
+  static {
+    SYNTAX = new CommandSyntax(NAME, PATH_PARAM, new Argument(PATH_PARAM, true));
+  }
 
-    @Override
-    public DeleteNode buildCommand(CommandString string, ParserContext context) throws CommandParseException {
+  DeleteNodeDescriptor() {
+    super(SYNTAX);
+  }
 
-        String path = getArgumentValue(PATH_PARAM, string, context);
+  @Override
+  public DeleteNode buildCommand(CommandString string, ParserContext context)
+      throws CommandParseException {
 
-        return new DeleteNode(path);
+    String path = getArgumentValue(PATH_PARAM, string, context);
 
-    }
-
+    return new DeleteNode(path);
+  }
 }
