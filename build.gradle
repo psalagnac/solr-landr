@@ -1,0 +1,12 @@
+
+// Import all plugings that are used in sub-scripts
+plugins {
+  alias(libs.plugins.diffplug.spotless)
+}
+
+// Define repositories for the build itself. Does not apply to project modules
+repositories {
+  mavenCentral()
+}
+
+apply from: file("gradle/spotless.gradle")

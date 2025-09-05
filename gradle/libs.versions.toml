@@ -5,6 +5,11 @@ jline = "3.25.1"
 solrj = "9.8.1"
 zookeeper = "3.8.4"
 curator = "5.2.1"
+diffplug-spotless = "7.2.1"
+google-javaformat = "1.18.1"
+
+[plugins]
+diffplug-spotless = { id = "com.diffplug.spotless", version.ref = "diffplug-spotless" }
 
 [libraries]
 junit = { module="junit:junit", version.ref = "junit" }

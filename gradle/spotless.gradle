@@ -1,0 +1,65 @@
+
+
+// Reformat build files
+spotless {
+  groovy {
+    greclipse()
+    leadingTabsToSpaces(2)
+    setLineEndings("UNIX")
+    endWithNewline()
+    trimTrailingWhitespace()
+
+    target "build.gradle", "settings.gradle", "gradle/*.gradle", "buildSrc/**/*.gradle"
+  }
+}
+
+// Reformat code for all project modules.
+// This is heavily inspired from Solr build.
+configure(subprojects) { prj ->
+  prj.apply plugin: libs.plugins.diffplug.spotless.get().pluginId
+
+  plugins.withType(JavaPlugin).configureEach { JavaPlugin it ->
+
+    prj.ext {
+      spotlessJavaSetup = (Action) {
+        it.toggleOffOn()
+        it.googleJavaFormat(libs.versions.google.javaformat.get())
+
+        it.setLineEndings("UNIX")
+        it.removeUnusedImports()
+        it.endWithNewline()
+        it.trimTrailingWhitespace()
+
+        it.custom('Reject wildcard imports', {input ->
+          // Wildcard imports can't be resolved by spotless itself.
+          // This will require the developer themselves to adhere to best practices.
+          if (input =~ /\nimport .*\*;/) {
+            throw new GradleException("Do not use wildcard imports.  'spotlessApply' cannot resolve this issue.")
+          }
+        })
+      }
+
+      spotlessGroovySetup = (Action) {
+        it.greclipse()
+        it.leadingTabsToSpaces(2)
+        it.setLineEndings("UNIX")
+        it.endWithNewline()
+        it.trimTrailingWhitespace()
+      }
+    }
+
+    spotless {
+      java {
+        prj.ext.spotlessJavaSetup.execute(it)
+
+        // Apply to all Java sources
+        target "src/**/*.java"
+      }
+
+      groovy {
+        prj.ext.spotlessGroovySetup.execute(it)
+        target "build.gradle"
+      }
+    }
+  }
+}
