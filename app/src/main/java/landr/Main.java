@@ -15,7 +15,7 @@ import landr.cmd.CommandEnvironment;
 import landr.cmd.CommandExecutionContext;
 import landr.cmd.DefaultExecutionContext;
 import landr.console.ConsoleTerminal;
-import landr.console.SolrConsole;
+import landr.console.LandrConsole;
 import landr.console.TerminalExecutionContext;
 import landr.console.TerminalFactory;
 import landr.parser.CommandParser;
@@ -113,7 +113,7 @@ public class Main {
       CommandEnvironment environment, CommandRegistry registry, MainArguments arguments) {
 
     TerminalFactory factory = createTerminalFactory(arguments, true);
-    SolrConsole console = new SolrConsole(factory);
+    LandrConsole console = new LandrConsole(factory);
 
     console.work(environment, registry);
   }

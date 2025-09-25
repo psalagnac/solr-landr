@@ -12,11 +12,11 @@ import landr.parser.CommandRegistry;
 import landr.parser.ParserContext;
 
 /** Main class to run the interactive console. */
-public class SolrConsole {
+public class LandrConsole {
 
   private final TerminalFactory factory;
 
-  public SolrConsole(TerminalFactory factory) {
+  public LandrConsole(TerminalFactory factory) {
     this.factory = factory;
   }
 
