@@ -35,6 +35,7 @@ public class ZkCommandRegistryEntry extends JacksonCommandRegistryEntry {
   public void register(CommandRegistry registry) {
 
     registerCommand(registry, new GetNodeDescriptor());
+    registerCommand(registry, new NodeStatDescriptor());
     registerCommand(registry, new ListNodesDescriptor());
     registerCommand(registry, new CreateNodeDescriptor());
     registerCommand(registry, new DeleteNodeDescriptor());
