@@ -12,14 +12,7 @@ public class CreateCollectionDescriptorTest extends AdminDescriptorTestBase {
   public void testAllParams() throws CommandParseException {
     String statement =
         """
-        create-collection
-          -name col
-          -shards 1
-          -replicas 2
-          -type NRT
-          -router r
-          -config conf
-          -async true
+          create-collection -name col -shards 1 -replicas 2 -type NRT -router r -config conf -async true
         """;
 
     CreateCollection command = parseSingleCommand(statement, CreateCollection.class);
