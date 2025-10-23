@@ -116,9 +116,11 @@ Syntax: `move-replica -collection _collection_  -replica _replica_ -node _node_`
 
 Following is the list of supported commands to interact directly with the Zookeeper ensemble. This is done with a client directly connecting to Zookeeper, which is independent of the one used by Solr client. Solr command and Zookeeper commands use independent sessions. There is no guarantee that the changes done with Zookeeper commands will not break the SolrCloud cluster.
 
-`zk-ls _path_`: List the child nodes of specified node
+`zk-ls _path_`: List the child nodes of specified node.
 
-`zk-get _path_` Get the data from node at the specific path
+`zk-get _path_` Get the data from node at the specific path.
+
+`zk-stat _path_`: Get metadata of a node including version, number of children, creation/modification timestamps, type (persistent/ephemeral), and data length.
 
 `zk-create _path_` Create a new Zookeeper node.
 
