@@ -122,6 +122,6 @@ Following is the list of supported commands to interact directly with the Zookee
 
 `zk-stat _path_`: Get metadata of a node including version, number of children, creation/modification timestamps, type (persistent/ephemeral), and data length.
 
-`zk-create _path_` Create a new Zookeeper node.
+`zk-create _path_ [-mode _mode_]` Create a new Zookeeper node. By default, creates a persistent node when mode is not specified. Accepted modes are values from Zookeeper `CreateMode` enum.
 
 `zk-delete _path_` Delete a node at specific path.

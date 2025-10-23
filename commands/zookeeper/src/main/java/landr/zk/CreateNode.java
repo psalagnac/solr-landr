@@ -11,9 +11,11 @@ import org.apache.zookeeper.data.ACL;
 class CreateNode extends ZkCommand {
 
   private final String path;
+  private final CreateMode mode;
 
-  CreateNode(String path) {
+  CreateNode(String path, CreateMode mode) {
     this.path = path;
+    this.mode = mode;
   }
 
   @Override
@@ -22,7 +24,6 @@ class CreateNode extends ZkCommand {
 
     byte[] data = new byte[0];
     List<ACL> acl = ZooDefs.Ids.OPEN_ACL_UNSAFE;
-
-    zk.create(path, data, acl, CreateMode.PERSISTENT);
+    zk.create(path, data, acl, mode);
   }
 }
