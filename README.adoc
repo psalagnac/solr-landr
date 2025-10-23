@@ -1,6 +1,6 @@
 = Solr Landr
 
-Solr Landr is a command line interface on top of SolrJ to interact with any accessible SolrCould cluster.
+Solr Landr is a command line interface on top of SolrJ to interact with any accessible SolrCloud cluster.
 
 
 * <<build,Building from source>>
@@ -28,7 +28,7 @@ Example 1: start the command line with Zookeeper running on localhost with defau
 Example 2: start the command line with Zookeeper running on a remote server, with a configured chroot:
 `./run.sh -zkhost remote:2181 -zkroot /solr`
 
-Complete list of parameter can be obtained by running `./run.sh -help`.
+Complete list of parameters can be obtained by running `./run.sh -help`.
 
 [[pragmas]]
 == Pragmas
