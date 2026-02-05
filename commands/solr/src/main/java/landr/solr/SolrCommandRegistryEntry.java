@@ -23,6 +23,7 @@ import landr.solr.parser.RequestStatusDescriptor;
 import landr.solr.parser.RestoreDescriptor;
 import landr.solr.parser.SelectDescriptor;
 import landr.solr.parser.SetClusterPropertyDescriptor;
+import landr.solr.parser.SetCollectionPropertyDescriptor;
 import landr.solr.parser.SplitShardDescriptor;
 import landr.solr.parser.UpdateDescriptor;
 import org.apache.solr.client.solrj.SolrClient;
@@ -61,6 +62,7 @@ public class SolrCommandRegistryEntry extends JacksonCommandRegistryEntry {
         registry, new NoArgumentDescriptor<>("delete-all-collections", DeleteAllCollections.class));
     registerCommand(registry, new BackupDescriptor());
     registerCommand(registry, new RestoreDescriptor());
+    registerCommand(registry, new SetCollectionPropertyDescriptor());
     registerCommand(registry, new CollectionStatusDescriptor());
 
     // shard management
