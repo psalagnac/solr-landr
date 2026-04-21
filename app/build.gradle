@@ -17,6 +17,8 @@ dependencies {
 
   runtimeOnly project(':commands:solr')
   runtimeOnly project(':commands:zookeeper')
+
+  runtimeOnly libs.slf4j.simple
 }
 
 application {

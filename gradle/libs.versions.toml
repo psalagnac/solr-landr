@@ -2,6 +2,7 @@
 junit = "4.13.2"
 jackson = "2.15.2"
 jline = "3.25.1"
+slf4j = "2.0.16"
 solrj = "9.8.1"
 zookeeper = "3.8.4"
 curator = "5.2.1"
@@ -17,6 +18,7 @@ jackson-core = { module="com.fasterxml.jackson.core:jackson-core", version.ref =
 jackson-databind = { module="com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 jline = { module="org.jline:jline", version.ref = "jline" }
 
+slf4j-simple = { module="org.slf4j:slf4j-simple", version.ref = "slf4j" }
 solrj = { module="org.apache.solr:solr-solrj", version.ref = "solrj" }
 zookeeper = { module="org.apache.zookeeper:zookeeper", version.ref = "zookeeper" }
 curator-test = { module="org.apache.curator:curator-test", version.ref = "curator" }
