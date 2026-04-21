@@ -2,6 +2,7 @@
 # Output files
 build
 .gradle
+/run.sh
 
 # Dev tools
 /.idea

@@ -1,3 +1,4 @@
+import java.nio.file.Files
 
 plugins {
   id 'landr.java-application'
@@ -7,7 +8,7 @@ plugins {
 }
 
 
-description = "Lander Standalone Application"
+description = "Landr Standalone Application"
 
 dependencies {
   implementation project(':core:commands')
@@ -27,3 +28,29 @@ application {
 run {
   standardInput = System.in
 }
+
+// Following code is to generate startup script, and add symbolic
+// link to it in base folder.
+def linkPath = rootProject.layout.projectDirectory.file('run.sh').asFile.toPath()
+def scriptsDirProvider = layout.buildDirectory.dir('scripts')
+def jarFileProvider = shadowJar.archiveFile
+def templateFile = project.file('src/main/filtered-resources/run.sh')
+
+assemble.doLast {
+  def jarPath = jarFileProvider.get().asFile.absolutePath
+  def scriptsDir = scriptsDirProvider.get().asFile
+
+  def outputFile = new File(scriptsDir, 'run.sh')
+  outputFile.text = templateFile.text.replace('@jarfile@', jarPath)
+  outputFile.setExecutable(true)
+
+  if (!Files.exists(linkPath)) {
+    Files.createSymbolicLink(linkPath, outputFile.toPath())
+  }
+}
+
+clean.doFirst {
+  Files.deleteIfExists(linkPath)
+}
+
+
